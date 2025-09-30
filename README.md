@@ -1,4 +1,4 @@
-# make_subdomains.sh — Usage
+# make_subdomains.sh - Usage
 
 Generate candidate subdomains from wordlists for reconnaissance. Supports single-prefix (p1.domain) and two-prefix (p1.p2.domain) generation, flexible flags, and direct stdout output for piping into other tools.
 
