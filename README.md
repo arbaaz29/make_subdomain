@@ -2,15 +2,17 @@
 
 Generate candidate subdomains from wordlists for reconnaissance. Supports single-prefix (p1.domain) and two-prefix (p1.p2.domain) generation, flexible flags, and direct stdout output for piping into other tools.
 
-Requirements
+## Requirements
 awk, sed, sort, mktemp
 
-Synopsis
+## Synopsis
+```
 make_subdomains.sh -w WORDLIST -d DOMAIN \
   [--depth 1|2|both] [-W WORDLIST2] [-o OUTPUT] [--stdout] [-h] [-v]
-
-Flags
+```
+## Flags
 Flag	Required	Description
+```
 -w, --wordlist PATH		First wordlist (prefix1). One prefix per line.
 -d, --domain DOMAIN		Base domain, e.g., example.com or testing.internal.example.com.
 -W, --wordlist2 PATH		Second wordlist (prefix2). Defaults to --wordlist if omitted.
@@ -19,22 +21,23 @@ Flag	Required	Description
 --stdout		Print results to STDOUT (no file, no footer). Mutually exclusive with -o/--out.
 -h, --help		Show help and exit.
 -v, --version		Print version and exit.
+```
+## Behavior & Data Cleaning
 
-Behavior & Data Cleaning
+1. Trims whitespace, strips CRLFs, lowercases prefixes.
 
-Trims whitespace, strips CRLFs, lowercases prefixes.
+2. Skips blank lines and lines starting with #.
 
-Skips blank lines and lines starting with #.
+3. Collapses accidental .. into ..
 
-Collapses accidental .. into ..
+4. Deduplicates output.
 
-Deduplicates output.
+5. Creates output directory if it doesn’t exist.
 
-Creates output directory if it doesn’t exist.
+6. If --stdout is present, no file is created and no summary footer is printed.
 
-If --stdout is present, no file is created and no summary footer is printed.
+## Examples
 
-Examples
 1) Single-prefix list (depth 1) → file
 ```./make_subdomains.sh \
   -w /opt/wordlists/subdomains.txt \
@@ -72,7 +75,7 @@ Examples
   --depth 1 \
   --stdout
 ```
-Exit Codes
+## Exit Codes
 
 0 - Success
 
@@ -82,12 +85,12 @@ Exit Codes
 
 3 - File size exceeded (use `ulimit -f unlimited` to temporarily create files that can exceed the restricted file size)
 
-Notes
+## Notes
 
-Intended for wordlists with one token per line.
+1. Intended for wordlists with one token per line.
 
-Works well piped into massdns, dnsx, httpx, etc.
+2. Works well piped into massdns, dnsx, httpx, etc.
 
-Version: 3.1.0
+3. Version: 3.1.0
 
 Tip: For very large wordlists, consider pre-filtering or sharding to manage runtime and memory (e.g., generate --depth 1 first to quickly find live hosts, then expand to --depth 2 on the hits).
